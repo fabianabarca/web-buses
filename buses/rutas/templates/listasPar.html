@@ -1,0 +1,2227 @@
+<html>
+
+  <head>
+
+	<style>
+	
+		* {margin: 0; padding: 0;}
+
+		.btn1{
+			border:0;
+			background: none;
+			outline:0px;
+		}
+
+		.DiagramaParadas{
+			display: flex;
+			align-items: start;
+			justify-content: center;
+		}
+
+		.InfoParadas{
+			display: flex;
+			align-items: start;
+			justify-content: center;
+		}
+
+		.tree ul {
+			padding-top: 20px; position: relative;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		.tree li {
+			float: left; text-align: center;
+			list-style-type: none;
+			position: relative;
+			padding: 20px 5px 0 5px;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		/*We will use ::before and ::after to draw the connectors*/
+
+		.tree li::before, .tree li::after{
+			content: '';
+			position: absolute; top: 0; right: 50%;
+			border-top: 1px solid #ccc;
+			width: 50%; height: 20px;
+		}
+		.tree li::after{
+			right: auto; left: 50%;
+			border-left: 1px solid #ccc;
+		}
+
+		/*We need to remove left-right connectors from elements without
+		any siblings*/
+		.tree li:only-child::after, .tree li:only-child::before {
+			display: none;
+		}
+
+		/*Remove space from the top of single children*/
+		.tree li:only-child{ padding-top: 0;}
+
+		/*Remove left connector from first child and
+		right connector from last child*/
+		.tree li:first-child::before, .tree li:last-child::after{
+			border: 0 none;
+		}
+		/*Adding back the vertical connector to the last nodes*/
+		.tree li:last-child::before{
+			border-right: 1px solid #ccc;
+			border-radius: 0 5px 0 0;
+			-webkit-border-radius: 0 5px 0 0;
+			-moz-border-radius: 0 5px 0 0;
+		}
+		.tree li:first-child::after{
+			border-radius: 5px 0 0 0;
+			-webkit-border-radius: 5px 0 0 0;
+			-moz-border-radius: 5px 0 0 0;
+		}
+
+		/*Time to add downward connectors from parents*/
+		.tree ul ul::before{
+			content: '';
+			position: absolute; top: 0; left: 50%;
+			border-left: 1px solid #ccc;
+			width: 0; height: 20px;
+		}
+
+		.tree li a{
+			border: 1px solid #ccc;
+			padding: 5px 80px;
+			text-decoration: none;
+			color: #666;
+			font-family: arial, verdana, tahoma;
+			font-size: 15px;
+			display: inline-block;
+
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		/*Time for some hover effects*/
+		/*We will apply the hover effect the the lineage of the element also*/
+		.tree li a:hover, .tree li a:hover+ul li a {
+			background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+		}
+		/*Connector styles on hover*/
+		.tree li a:hover+ul li::after,
+		.tree li a:hover+ul li::before,
+		.tree li a:hover+ul::before,
+		.tree li a:hover+ul ul::before{
+			border-color:  #94a0b4;
+		}
+	
+	</style>
+
+  </head>
+
+  <body>
+  <div id="accordion">
+	<div class="DiagramaParadas">
+		<div class="tree">
+		<ul>
+			<li>
+				<a href="#">San José</a>
+				<ul>
+					<li>
+				<div id="headingOne">
+					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParTar-SJ" aria-expanded="false" aria-controls="ParTar-SJ">
+					  Paradas San José/Tarbaca
+					</button>
+				</div>
+
+					<ul>
+						<li>
+							<a href="#">Tarbaca</a>
+						<ul>
+							<li>
+								<div id="headingTwo">
+									<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParSG-Tar" aria-expanded="false" aria-controls="ParSG-Tar">
+										Paradas Tarbaca/San Gabriel
+									</button>
+								</div>
+
+								<ul>
+									<li>
+										<a href="#">San Gabriel</a>
+										<ul>
+											<li>
+												<div id="headingThree">
+													<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParLM-SG" aria-expanded="false" aria-controls="ParLM-SG">
+														Paradas San Gabriel/Los Mangos
+													</button>
+												</div>
+
+												<ul>
+													<li>
+														<a href="#">Los Mangos</a>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<div id="headingFour">
+									<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParJor-Tar" aria-expanded="false" aria-controls="ParJor-Tar">
+										Paradas Tarbaca/Jorco
+									</button>
+								</div>
+
+								<ul>
+									<li>
+										<a href="#">Jorco</a>
+										<ul>
+											<li>
+												<div id="headingFive">
+													<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParSI-Jor" aria-expanded="false" aria-controls="ParSI-Jor">
+														Paradas Jorco/San Ignacio
+													</button>
+												</div>
+
+												<ul>
+													<li>
+														<a href="#">San Ignacio</a>
+														<ul>
+															<li>
+																<div id="headingSix">
+																	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParTur-SI" aria-expanded="false" aria-controls="ParTur-SI">
+																		Paradas San Ignacio/Turrujal
+																	</button>
+																</div>
+
+																<ul>
+																	<li>
+																		<a href="#">Turrujal</a>
+																	</li>
+																</ul>
+															</li>
+															<li>
+																<div id="headingSeven">
+																	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#ParSL-SI" aria-expanded="false" aria-controls="ParSL-SI">
+																		Paradas San Ignacio/San Luis
+																	</button>
+																</div>
+
+																<ul>
+																	<li>
+																		<a href="#">San Luis</a>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						</li>
+					</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<br />
+
+  <div class="collapse" id="ParTar-SJ" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+
+			<div id="accordionTarSJ">
+			  <div class="card">
+				<div class="card-header" id="headingTarSJ">
+				  <h5 class="mb-0">
+					<button class="btn btn-link" data-toggle="collapse" data-target="#collapseTarSJ" aria-expanded="true" aria-controls="collapseTarSJ">
+					  De Tarbaca hacia San José
+					</button>
+				  </h5>
+				</div>
+				  </div>
+
+				  <div id="collapseTarSJ" class="collapse" aria-labelledby="headingTarSJ" data-parent="#accordionTarSJ">
+					  <div class="card-body">
+							<p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+							<ol class="fa-ul">
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_00" aria-expanded="false" aria-controls="SJ_0_00"><i class="fas fa-plus-circle"></button></i></span>Cruce Vivero Tarbaquita</li>
+									<div class="collapse" id="SJ_0_00">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.814861,-84.112708</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.814861%2C-84.112708&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_01" aria-expanded="false" aria-controls="SJ_0_01"><i class="fas fa-plus-circle"></button></i></span>Restaurante Donde Alcides</li>
+									<div class="collapse" id="SJ_0_01">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.818162,-84.112598</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.818162%2C-84.112598&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_02" aria-expanded="false" aria-controls="SJ_0_02"><i class="fas fa-plus-circle"></button></i></span>Iglesia Católica de Tarbaca</li>
+									<div class="collapse" id="SJ_0_02">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.819667,-84.110409</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.819667%2C-84.110409&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_03" aria-expanded="false" aria-controls="SJ_0_03"><i class="fas fa-plus-circle"></button></i></span>Estación terrena (antena) del ICE</li>
+									<div class="collapse" id="SJ_0_03">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.822590,-84.109629</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.822590%2C-84.109629&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_04" aria-expanded="false" aria-controls="SJ_0_04"><i class="fas fa-plus-circle"></button></i></span>Entrada a Casa Candelaria</li>
+									<div class="collapse" id="SJ_0_04">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.825393,-84.110770</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.825393%2C-84.110770&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_05" aria-expanded="false" aria-controls="SJ_0_05"><i class="fas fa-plus-circle"></button></i></span>Entrada a Hotel Alta Vista</li>
+									<div class="collapse" id="SJ_0_05">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.827857,-84.106332</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.827857%2C-84.106332&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_06" aria-expanded="false" aria-controls="SJ_0_06"><i class="fas fa-plus-circle"></button></i></span>Calle Azulillos</li>
+									<div class="collapse" id="SJ_0_06">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.831590,-84.106125</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.831590%2C-84.106125&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_07" aria-expanded="false" aria-controls="SJ_0_07"><i class="fas fa-plus-circle"></button></i></span>Parrillada El Che (antiguo Restaurante El Palenque)</li>
+									<div class="collapse" id="SJ_0_07">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.832522,-84.104587</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.832522%2C-84.104587&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_08" aria-expanded="false" aria-controls="SJ_0_08"><i class="fas fa-plus-circle"></button></i></span>La casa del Gringo (entrada a los Castro)</li>
+									<div class="collapse" id="SJ_0_08">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.835035,-84.101076</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.835035%2C-84.101076&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_09" aria-expanded="false" aria-controls="SJ_0_09"><i class="fas fa-plus-circle"></button></i></span>Restaurante Ram Luna</li>
+									<div class="collapse" id="SJ_0_09">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.836953,-84.097896</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.836953%2C-84.097896&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_10" aria-expanded="false" aria-controls="SJ_0_10"><i class="fas fa-plus-circle"></button></i></span>Antes de Mirador La Tranca</li>
+									<div class="collapse" id="SJ_0_10">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.840516,-84.098272</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.840516%2C-84.098272&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_11" aria-expanded="false" aria-controls="SJ_0_11"><i class="fas fa-plus-circle"></button></i></span>Después de Mirador La Tranca</li>
+									<div class="collapse" id="SJ_0_11">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.841315,-84.098909</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.841315%2C-84.098909&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_12" aria-expanded="false" aria-controls="SJ_0_12"><i class="fas fa-plus-circle"></button></i></span>Restaurante El Llanero</li>
+									<div class="collapse" id="SJ_0_12">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.845008,-84.099944</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.845008%2C-84.099944&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_13" aria-expanded="false" aria-controls="SJ_0_13"><i class="fas fa-plus-circle"></button></i></span>Mirador La Montaña</li>
+									<div class="collapse" id="SJ_0_13">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.846365,-84.099249</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.846365%2C-84.099249&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_14" aria-expanded="false" aria-controls="SJ_0_14"><i class="fas fa-plus-circle"></button></i></span>Barrio Lourdes (puente de Sáurez)</li>
+									<div class="collapse" id="SJ_0_14">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.852299,-84.099798</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.852299%2C-84.099798&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_15" aria-expanded="false" aria-controls="SJ_0_15"><i class="fas fa-plus-circle"></button></i></span>Acueducto Municipal de Aserrí (El Ranchito)</li>
+									<div class="collapse" id="SJ_0_15">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.854447,-84.096986</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.854447%2C-84.096986&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_16" aria-expanded="false" aria-controls="SJ_0_16"><i class="fas fa-plus-circle"></button></i></span>Cinco Esquinas de Aserrí</li>
+									<div class="collapse" id="SJ_0_16">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.857445,-84.094438</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.857445%2C-84.094438&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_17" aria-expanded="false" aria-controls="SJ_0_17"><i class="fas fa-plus-circle"></button></i></span>Antes de Palí de Cinco Esquinas</li>
+									<div class="collapse" id="SJ_0_17">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.859533,-84.094183</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.859533%2C-84.094183&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_18" aria-expanded="false" aria-controls="SJ_0_18"><i class="fas fa-plus-circle"></button></i></span>Detrás de la Iglesia Católica de Aserrí</li>
+									<div class="collapse" id="SJ_0_18">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.861510,-84.093206</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.861510%2C-84.093206&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_19" aria-expanded="false" aria-controls="SJ_0_19"><i class="fas fa-plus-circle"></button></i></span>Antiguo Banco Nacional diagonal al Parque de Aserrí</li>
+									<div class="collapse" id="SJ_0_19">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.862880,-84.092079</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.862880%2C-84.092079&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_20" aria-expanded="false" aria-controls="SJ_0_20"><i class="fas fa-plus-circle"></button></i></span>Chicharronera Cacique Acserí</li>
+									<div class="collapse" id="SJ_0_20">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.864110,-84.090751</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.864110%2C-84.090751&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_21" aria-expanded="false" aria-controls="SJ_0_21"><i class="fas fa-plus-circle"></button></i></span>Depósito Las Gravilias</li>
+									<div class="collapse" id="SJ_0_21">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.865799,-84.088848</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.865799%2C-84.088848&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_22" aria-expanded="false" aria-controls="SJ_0_22"><i class="fas fa-plus-circle"></button></i></span>Cementerio de Aserrí</li>
+									<div class="collapse" id="SJ_0_22">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.867528,-84.086822</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.867528%2C-84.086822&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_23" aria-expanded="false" aria-controls="SJ_0_23"><i class="fas fa-plus-circle"></button></i></span>Super Más y Más (antigua fábrica Jockey)</li>
+									<div class="collapse" id="SJ_0_23">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.868665,-84.084543</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.868665%2C-84.084543&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_24" aria-expanded="false" aria-controls="SJ_0_24"><i class="fas fa-plus-circle"></button></i></span>Licorera Alberto Fallas</li>
+									<div class="collapse" id="SJ_0_24">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.869805,-84.082230</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.869805%2C-84.082230&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_25" aria-expanded="false" aria-controls="SJ_0_25"><i class="fas fa-plus-circle"></button></i></span>Panadería Trinidad</li>
+									<div class="collapse" id="SJ_0_25">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.871126,-84.080503</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.871126%2C-84.080503&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_26" aria-expanded="false" aria-controls="SJ_0_26"><i class="fas fa-plus-circle"></button></i></span>Cárcel de mujeres El Buen Pastor</li>
+									<div class="collapse" id="SJ_0_26">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.874667,-84.077431</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.874667%2C-84.077431&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_27" aria-expanded="false" aria-controls="SJ_0_27"><i class="fas fa-plus-circle"></button></i></span>Restaurante El Boyero</li>
+									<div class="collapse" id="SJ_0_27">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.877386,-84.075169</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.877386%2C-84.075169&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_28" aria-expanded="false" aria-controls="SJ_0_28"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio La Guaria</li>
+									<div class="collapse" id="SJ_0_28">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.879739,-84.073687</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.879739%2C-84.073687&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_29" aria-expanded="false" aria-controls="SJ_0_29"><i class="fas fa-plus-circle"></button></i></span>La Guacamaya Desamparados</li>
+									<div class="collapse" id="SJ_0_29">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.881264,-84.071181</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.881264%2C-84.071181&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_30" aria-expanded="false" aria-controls="SJ_0_30"><i class="fas fa-plus-circle"></button></i></span>Centro Comercial Expreso</li>
+									<div class="collapse" id="SJ_0_30">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.881992,-84.069623</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.881992%2C-84.069623&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_31" aria-expanded="false" aria-controls="SJ_0_31"><i class="fas fa-plus-circle"></button></i></span>MaxiPalí cruce de San Miguel</li>
+									<div class="collapse" id="SJ_0_31">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.885498,-84.066535</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.885498%2C-84.066535&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_32" aria-expanded="false" aria-controls="SJ_0_32"><i class="fas fa-plus-circle"></button></i></span>Empeños La Cueva</li>
+									<div class="collapse" id="SJ_0_32">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.888166,-84.065026</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.888166%2C-84.065026&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_33" aria-expanded="false" aria-controls="SJ_0_33"><i class="fas fa-plus-circle"></button></i></span>Megasuper Desamparados</li>
+									<div class="collapse" id="SJ_0_33">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.890720,-84.064263</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.890720%2C-84.064263&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_34" aria-expanded="false" aria-controls="SJ_0_34"><i class="fas fa-plus-circle"></button></i></span>Clínica Marcial Fallas</li>
+									<div class="collapse" id="SJ_0_34">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.893680,-84.064309</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.893680%2C-84.064309&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_35" aria-expanded="false" aria-controls="SJ_0_35"><i class="fas fa-plus-circle"></button></i></span>Después de Plaza Decosure</li>
+									<div class="collapse" id="SJ_0_35">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.895938,-84.064297</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.895938%2C-84.064297&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_36" aria-expanded="false" aria-controls="SJ_0_36"><i class="fas fa-plus-circle"></button></i></span>Costado norte de Iglesia Católica Desamparados</li>
+									<div class="collapse" id="SJ_0_36">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.898136,-84.064505</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.898136%2C-84.064505&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_37" aria-expanded="false" aria-controls="SJ_0_37"><i class="fas fa-plus-circle"></button></i></span>Colegio Monseñor Rubén Odio</li>
+									<div class="collapse" id="SJ_0_37">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.900217,-84.067632</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.900217%2C-84.067632&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_38" aria-expanded="false" aria-controls="SJ_0_38"><i class="fas fa-plus-circle"></button></i></span>El Lagar Desamparados</li>
+									<div class="collapse" id="SJ_0_38">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.902454,-84.068704</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.902454%2C-84.068704&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_39" aria-expanded="false" aria-controls="SJ_0_39"><i class="fas fa-plus-circle"></button></i></span>Cementerio de Desamparados</li>
+									<div class="collapse" id="SJ_0_39">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.904554,-84.069107</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.904554%2C-84.069107&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_40" aria-expanded="false" aria-controls="SJ_0_40"><i class="fas fa-plus-circle"></button></i></span>Plaza Mercado</li>
+									<div class="collapse" id="SJ_0_40">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.908922,-84.068520</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.908922%2C-84.068520&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_41" aria-expanded="false" aria-controls="SJ_0_41"><i class="fas fa-plus-circle"></button></i></span>Gasolinera Delta Santa Marta</li>
+									<div class="collapse" id="SJ_0_41">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.911636,-84.068739</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.911636%2C-84.068739&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_42" aria-expanded="false" aria-controls="SJ_0_42"><i class="fas fa-plus-circle"></button></i></span>Burger King (Parque de la Paz)</li>
+									<div class="collapse" id="SJ_0_42">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.913686,-84.068890</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.913686%2C-84.068890&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_43" aria-expanded="false" aria-controls="SJ_0_43"><i class="fas fa-plus-circle"></button></i></span>Gran Centro Comercial del Sur</li>
+									<div class="collapse" id="SJ_0_43">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.917186,-84.070277</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.917186%2C-84.070277&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_44" aria-expanded="false" aria-controls="SJ_0_44"><i class="fas fa-plus-circle"></button></i></span>Antes de Plaza González Víquez</li>
+									<div class="collapse" id="SJ_0_44">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.920156,-84.071635</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.920156%2C-84.071635&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_45" aria-expanded="false" aria-controls="SJ_0_45"><i class="fas fa-plus-circle"></button></i></span>Plaza González Víquez</li>
+									<div class="collapse" id="SJ_0_45">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.924265,-84.073506</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.924265%2C-84.073506&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_46" aria-expanded="false" aria-controls="SJ_0_46"><i class="fas fa-plus-circle"></button></i></span>Después de Plaza González Víquez</li>
+									<div class="collapse" id="SJ_0_46">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.926494,-84.074245</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.926494%2C-84.074245&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_47" aria-expanded="false" aria-controls="SJ_0_47"><i class="fas fa-plus-circle"></button></i></span>Barrio Chino (antigua Casa del Tornillo)</li>
+									<div class="collapse" id="SJ_0_47">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.930439,-84.074849</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.930439%2C-84.074849&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_0_48" aria-expanded="false" aria-controls="SJ_0_48"><i class="fas fa-plus-circle"></button></i></span>Terminal AyA San José (calle 7 con avenidas 10 y 12)</li>
+									<div class="collapse" id="SJ_0_48">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.928791,-84.076267</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.928791%2C-84.076267&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+							</ol>
+
+						  	</div>
+    					</div>
+
+				  <div class="card">
+					<div class="card-header" id="headingSJTar">
+					  <h5 class="mb-0">
+						<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSJTar" aria-expanded="false" aria-controls="collapseSJTar">
+						  De San José hacia Tarbaca
+						</button>
+					  </h5>
+					</div>
+
+					  <div id="collapseSJTar" class="collapse" aria-labelledby="headingSJTar" data-parent="#accordionTarSJ">
+      					<div class="card-body">
+
+							<p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+							<ol class="fa-ul">
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_00" aria-expanded="false" aria-controls="SJ_1_00"><i class="fas fa-plus-circle"></button></i></span>Terminal AyA San José (calle 7 con avenidas 10 y 12)</li>
+										<div class="collapse" id="SJ_1_00">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.928791,-84.076267</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.928791%2C-84.076267&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_01" aria-expanded="false" aria-controls="SJ_1_01"><i class="fas fa-plus-circle"></button></i></span>MOPT (Plaza González Víquez)</li>
+										<div class="collapse" id="SJ_1_01">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.925223,-84.074856</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.925223%2C-84.074856&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_02" aria-expanded="false" aria-controls="SJ_1_02"><i class="fas fa-plus-circle"></button></i></span>Colegio Seminario (Barrio La Cruz)</li>
+										<div class="collapse" id="SJ_1_02">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.917694,-84.074772</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.917694%2C-84.074772&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_03" aria-expanded="false" aria-controls="SJ_1_03"><i class="fas fa-plus-circle"></button></i></span>Costado norte de Gran Centro Comercial del Sur</li>
+										<div class="collapse" id="SJ_1_03">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.917997,-84.070812</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.917997%2C-84.070812&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_04" aria-expanded="false" aria-controls="SJ_1_04"><i class="fas fa-plus-circle"></button></i></span>Parque de la Paz</li>
+									<div class="collapse" id="SJ_1_04">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.913375,-84.068945</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.913375%2C-84.068945&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_05" aria-expanded="false" aria-controls="SJ_1_05"><i class="fas fa-plus-circle"></button></i></span>Antiguo Jorón</li>
+									<div class="collapse" id="SJ_1_05">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.910593,-84.068744</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.910593%2C-84.068744&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_06" aria-expanded="false" aria-controls="SJ_1_06"><i class="fas fa-plus-circle"></button></i></span>Antiguo Radio Reloj</li>
+									<div class="collapse" id="SJ_1_06">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.908103,-84.068548</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.908103%2C-84.068548&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_07" aria-expanded="false" aria-controls="SJ_1_07"><i class="fas fa-plus-circle"></button></i></span>Cementerio de Desamparados</li>
+									<div class="collapse" id="SJ_1_07">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.904405,-84.069289</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.904405%2C-84.069289&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_08" aria-expanded="false" aria-controls="SJ_1_08"><i class="fas fa-plus-circle"></button></i></span>El Lagar</li>
+									<div class="collapse" id="SJ_1_08">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.902576,-84.068917</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.902576%2C-84.068917&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_09" aria-expanded="false" aria-controls="SJ_1_09"><i class="fas fa-plus-circle"></button></i></span>Multicentro Desamparados</li>
+									<div class="collapse" id="SJ_1_09">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.899697,-84.067437</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.899697%2C-84.067437&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_10" aria-expanded="false" aria-controls="SJ_1_10"><i class="fas fa-plus-circle"></button></i></span>Centro Comercial La Villa</li>
+									<div class="collapse" id="SJ_1_10">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.896133,-84.065260</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.896133%2C-84.065260&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_11" aria-expanded="false" aria-controls="SJ_1_11"><i class="fas fa-plus-circle"></button></i></span>Clínica Marcial Fallas</li>
+									<div class="collapse" id="SJ_1_11">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.893524,-84.064358</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.893524%2C-84.064358&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_12" aria-expanded="false" aria-controls="SJ_1_12"><i class="fas fa-plus-circle"></button></i></span>Tienda Ekono</li>
+									<div class="collapse" id="SJ_1_12">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.891566,-84.064265</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.891566%2C-84.064265&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_13" aria-expanded="false" aria-controls="SJ_1_13"><i class="fas fa-plus-circle"></button></i></span>Iglesia Kabod</li>
+									<div class="collapse" id="SJ_1_13">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.888456,-84.065000</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.888456%2C-84.065000&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_14" aria-expanded="false" aria-controls="SJ_1_14"><i class="fas fa-plus-circle"></button></i></span>Maxipalí (cruce de San Miguel)</li>
+									<div class="collapse" id="SJ_1_14">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.885570,-84.066641</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.885570%2C-84.066641&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_15" aria-expanded="false" aria-controls="SJ_1_15"><i class="fas fa-plus-circle"></button></i></span>Centro Comercial Expreso</li>
+									<div class="collapse" id="SJ_1_15">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.883950,-84.068529</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.883950%2C-84.068529&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_16" aria-expanded="false" aria-controls="SJ_1_16"><i class="fas fa-plus-circle"></button></i></span>Escuela de Capacitación de la Policía de Tránsito</li>
+									<div class="collapse" id="SJ_1_16">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.881039,-84.072158</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.881039%2C-84.072158&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_17" aria-expanded="false" aria-controls="SJ_1_17"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio La Guaria</li>
+									<div class="collapse" id="SJ_1_17">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.880308,-84.073407</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.880308%2C-84.073407&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_18" aria-expanded="false" aria-controls="SJ_1_18"><i class="fas fa-plus-circle"></button></i></span>Restaurante El Boyero</li>
+									<div class="collapse" id="SJ_1_18">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.878021,-84.074882</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.878021%2C-84.074882&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_19" aria-expanded="false" aria-controls="SJ_1_19"><i class="fas fa-plus-circle"></button></i></span>Cárcel de mujeres El Buen Pastor</li>
+									<div class="collapse" id="SJ_1_19">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.874851,-84.077401</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.874851%2C-84.077401&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_20" aria-expanded="false" aria-controls="SJ_1_20"><i class="fas fa-plus-circle"></button></i></span>Panadería La Trinidad</li>
+									<div class="collapse" id="SJ_1_20">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.871457,-84.080371</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.871457%2C-84.080371&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_21" aria-expanded="false" aria-controls="SJ_1_21"><i class="fas fa-plus-circle"></button></i></span>Licorera Alberto Fallas</li>
+									<div class="collapse" id="SJ_1_21">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.869869,-84.082253</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.869869%2C-84.082253&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_22" aria-expanded="false" aria-controls="SJ_1_22"><i class="fas fa-plus-circle"></button></i></span>Super Más y Más (antigua fábrica Jockey)</li>
+									<div class="collapse" id="SJ_1_22">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.868627,-84.084798</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.868627%2C-84.084798&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_23" aria-expanded="false" aria-controls="SJ_1_23"><i class="fas fa-plus-circle"></button></i></span>Cementerio de Aserrí</li>
+									<div class="collapse" id="SJ_1_23">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.867525,-84.087069</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.867525%2C-84.087069&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_24" aria-expanded="false" aria-controls="SJ_1_24"><i class="fas fa-plus-circle"></button></i></span>Depósito Las Gravilias</li>
+									<div class="collapse" id="SJ_1_24">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.866122,-84.088673</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.866122%2C-84.088673&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_25" aria-expanded="false" aria-controls="SJ_1_25"><i class="fas fa-plus-circle"></button></i></span>Chicharronera Cacique Acserí</li>
+									<div class="collapse" id="SJ_1_25">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.864344,-84.090606</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.864344%2C-84.090606&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_26" aria-expanded="false" aria-controls="SJ_1_26"><i class="fas fa-plus-circle"></button></i></span>Palacio Municipal de Aserrí</li>
+									<div class="collapse" id="SJ_1_26">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.862677,-84.093092</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.862677%2C-84.093092&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_27" aria-expanded="false" aria-controls="SJ_1_27"><i class="fas fa-plus-circle"></button></i></span>Banco Nacional de Aserrí</li>
+									<div class="collapse" id="SJ_1_27">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.861305,-84.094247</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.861305%2C-84.094247&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_28" aria-expanded="false" aria-controls="SJ_1_28"><i class="fas fa-plus-circle"></button></i></span>Cinco Esquinas de Aserrí</li>
+									<div class="collapse" id="SJ_1_28">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.858330,-84.094594</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.858330%2C-84.094594&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_29" aria-expanded="false" aria-controls="SJ_1_29"><i class="fas fa-plus-circle"></button></i></span>Acueducto Municipal de Aserrí (El Ranchito)</li>
+									<div class="collapse" id="SJ_1_29">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.854757,-84.096859</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.854757%2C-84.096859&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_30" aria-expanded="false" aria-controls="SJ_1_30"><i class="fas fa-plus-circle"></button></i></span>Barrio Lourdes (abajo)</li>
+									<div class="collapse" id="SJ_1_30">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.852812,-84.099429</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.852812%2C-84.099429&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_31" aria-expanded="false" aria-controls="SJ_1_31"><i class="fas fa-plus-circle"></button></i></span>Barrio Lourdes (puente de Sáurez)</li>
+									<div class="collapse" id="SJ_1_31">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.849975,-84.099151</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.849975%2C-84.099151&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_32" aria-expanded="false" aria-controls="SJ_1_32"><i class="fas fa-plus-circle"></button></i></span>Mirador La Montaña</li>
+									<div class="collapse" id="SJ_1_32">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.846356,-84.099368</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.846356%2C-84.099368&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_33" aria-expanded="false" aria-controls="SJ_1_33"><i class="fas fa-plus-circle"></button></i></span>Restaurante El Llanero</li>
+									<div class="collapse" id="SJ_1_33">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.845077,-84.100046</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.845077%2C-84.100046&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_34" aria-expanded="false" aria-controls="SJ_1_34"><i class="fas fa-plus-circle"></button></i></span>Mirador La Tranca (abajo)</li>
+									<div class="collapse" id="SJ_1_34">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.841875,-84.099058</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.841875%2C-84.099058&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_35" aria-expanded="false" aria-controls="SJ_1_35"><i class="fas fa-plus-circle"></button></i></span>Mirador La Tranca (arriba)</li>
+									<div class="collapse" id="SJ_1_35">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.840546,-84.098472</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.840546%2C-84.098472&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_36" aria-expanded="false" aria-controls="SJ_1_36"><i class="fas fa-plus-circle"></button></i></span>Mirador Ram Luna</li>
+									<div class="collapse" id="SJ_1_36">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.836978,-84.098075</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.836978%2C-84.098075&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_37" aria-expanded="false" aria-controls="SJ_1_37"><i class="fas fa-plus-circle"></button></i></span>La casa del Gringo (entrada a los Castro)</li>
+									<div class="collapse" id="SJ_1_37">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.835128,-84.100362</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.835128%2C-84.100362&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_38" aria-expanded="false" aria-controls="SJ_1_38"><i class="fas fa-plus-circle"></button></i></span>Antes del antiguo El Palenque</li>
+									<div class="collapse" id="SJ_1_38">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.836163,-84.104031</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.836163%2C-84.104031&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_39" aria-expanded="false" aria-controls="SJ_1_39"><i class="fas fa-plus-circle"></button></i></span>Parrillada El Che (antiguo Restaurante El Palenque)</li>
+									<div class="collapse" id="SJ_1_39">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.832603,-84.104394</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.832603%2C-84.104394&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_40" aria-expanded="false" aria-controls="SJ_1_40"><i class="fas fa-plus-circle"></button></i></span>Restaurante Las Doñitas</li>
+									<div class="collapse" id="SJ_1_40">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.831433,-84.106346</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.831433%2C-84.106346&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_41" aria-expanded="false" aria-controls="SJ_1_41"><i class="fas fa-plus-circle"></button></i></span>Entrada a Hotel Alta Vista</li>
+									<div class="collapse" id="SJ_1_41">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.828080,-84.106081</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.828080%2C-84.106081&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_42" aria-expanded="false" aria-controls="SJ_1_42"><i class="fas fa-plus-circle"></button></i></span>Entrada a Casa Candelaria</li>
+									<div class="collapse" id="SJ_1_42">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.825499,-84.110825</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.825499%2C-84.110825&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_43" aria-expanded="false" aria-controls="SJ_1_43"><i class="fas fa-plus-circle"></button></i></span>Estación terrena (antena) del ICE</li>
+									<div class="collapse" id="SJ_1_43">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.822049,-84.109666</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.822049%2C-84.109666&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_44" aria-expanded="false" aria-controls="SJ_1_44"><i class="fas fa-plus-circle"></button></i></span>Iglesia Católica de Tarbaca</li>
+									<div class="collapse" id="SJ_1_44">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.819796,-84.110462</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.819796%2C-84.110462&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_45" aria-expanded="false" aria-controls="SJ_1_45"><i class="fas fa-plus-circle"></button></i></span>Restaurante Donde Alcides</li>
+									<div class="collapse" id="SJ_1_45">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.818559,-84.112539</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.818559%2C-84.112539&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+								<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SJ_1_46" aria-expanded="false" aria-controls="SJ_1_46"><i class="fas fa-plus-circle"></button></i></span>Antes del cruce de San Gabriel y Acosta en Tarbaca</li>
+									<div class="collapse" id="SJ_1_46">
+										<ul class="fa-ul">
+											<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.815473,-84.113221</li>
+											<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.815473%2C-84.113221&navigate=yes&zoom=17">Dirección en Waze</a></li>
+										</ul>
+									</div>
+							</ol>
+						</div>
+					  </div>
+        			</div>
+			  </div>
+			</div>
+	</div>
+
+  <div class="collapse" id="ParSG-Tar" aria-labelledby="headingTwo" data-parent="#accordion">
+			<div class="card-body">
+
+			<div id="accordionSGTar">
+				<div class="card">
+					<div class="card-header" id="headingSGTar">
+					  <h5 class="mb-0">
+						<button class="btn btn-link" data-toggle="collapse" data-target="#collapseSGTar" aria-expanded="true" aria-controls="collapseSGTar">
+						  De San Gabriel hacia Tarbaca
+						</button>
+					  </h5>
+					</div>
+
+					<div id="collapseSGTar" class="collapse" aria-labelledby="headingSGTar" data-parent="#accordionSGTar">
+      					<div class="card-body">
+
+						<p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+						<ol class="fa-ul">
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_00" aria-expanded="false" aria-controls="SG_0_00"><i class="fas fa-plus-circle"></button></i></span>San Gabriel centro (frente a El Gato Negro)</li>
+								<div class="collapse" id="SG_0_00">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.787128,-84.106230</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.787128%2C-84.106230&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_01" aria-expanded="false" aria-controls="SG_0_01"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio El Alto (la vuelta de Betty Camacho)</li>
+								<div class="collapse" id="SG_0_01">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.786021,-84.104787</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.786021%2C-84.104787&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_02" aria-expanded="false" aria-controls="SG_0_02"><i class="fas fa-plus-circle"></button></i></span>Entrada al Liceo San Gabriel (Mini Súper Padilla)</li>
+								<div class="collapse" id="SG_0_02">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.786942,-84.103978</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.786942%2C-84.103978&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_03" aria-expanded="false" aria-controls="SG_0_03"><i class="fas fa-plus-circle"></button></i></span>Bar El Yugo</li>
+								<div class="collapse" id="SG_0_03">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789205,-84.103085</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789205%2C-84.103085&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_04" aria-expanded="false" aria-controls="SG_0_04"><i class="fas fa-plus-circle"></button></i></span>Súper Mío Cid</li>
+								<div class="collapse" id="SG_0_04">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.791810,-84.100593</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.791810%2C-84.100593&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_05" aria-expanded="false" aria-controls="SG_0_05"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio Los Corella</li>
+								<div class="collapse" id="SG_0_05">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789967,-84.098342</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789967%2C-84.098342&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_06" aria-expanded="false" aria-controls="SG_0_06"><i class="fas fa-plus-circle"></button></i></span>Después de Bar La Curvita</li>
+								<div class="collapse" id="SG_0_06">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789765,-84.097486</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789765%2C-84.097486&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_07" aria-expanded="false" aria-controls="SG_0_07"><i class="fas fa-plus-circle"></button></i></span>La Fila</li>
+								<div class="collapse" id="SG_0_07">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.791524,-84.096316</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.791524%2C-84.096316&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_08" aria-expanded="false" aria-controls="SG_0_08"><i class="fas fa-plus-circle"></button></i></span>Importadora Monge La Fila</li>
+								<div class="collapse" id="SG_0_08">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792853,-84.096171</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792853%2C-84.096171&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_09" aria-expanded="false" aria-controls="SG_0_09"><i class="fas fa-plus-circle"></button></i></span>Barrio San Buenaventura (contiguo a la chatarrera)</li>
+								<div class="collapse" id="SG_0_09">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794581,-84.095011</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794581%2C-84.095011&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_10" aria-expanded="false" aria-controls="SG_0_10"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio Nazareth</li>
+								<div class="collapse" id="SG_0_10">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796641,-84.095823</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796641%2C-84.095823&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_11" aria-expanded="false" aria-controls="SG_0_11"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas (abajo)</li>
+								<div class="collapse" id="SG_0_11">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798433,-84.096553</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798433%2C-84.096553&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_12" aria-expanded="false" aria-controls="SG_0_12"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas</li>
+								<div class="collapse" id="SG_0_12">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.801098,-84.099677</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.801098%2C-84.099677&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_13" aria-expanded="false" aria-controls="SG_0_13"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas (arriba)</li>
+								<div class="collapse" id="SG_0_13">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.803117,-84.101770</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.803117%2C-84.101770&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_14" aria-expanded="false" aria-controls="SG_0_14"><i class="fas fa-plus-circle"></button></i></span>Entrada a El Tigre</li>
+								<div class="collapse" id="SG_0_14">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.807158,-84.102808</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.807158%2C-84.102808&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_15" aria-expanded="false" aria-controls="SG_0_15"><i class="fas fa-plus-circle"></button></i></span>Barrio La Rita (abajo)</li>
+								<div class="collapse" id="SG_0_15">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.807209,-84.103515</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.807209%2C-84.103515&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_16" aria-expanded="false" aria-controls="SG_0_16"><i class="fas fa-plus-circle"></button></i></span>Barrio La Rita (arriba)</li>
+								<div class="collapse" id="SG_0_16">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.807773,-84.10441</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.807773%2C-84.10441&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+							<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_0_17" aria-expanded="false" aria-controls="SG_0_17"><i class="fas fa-plus-circle"></button></i></span>Antes del cruce de San Gabriel y Acosta en Tarbaca</li>
+								<div class="collapse" id="SG_0_17">
+									<ul class="fa-ul">
+										<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.812960,-84.109534</li>
+										<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.812960%2C-84.109534&navigate=yes&zoom=17">Dirección en Waze</a></li>
+									</ul>
+								</div>
+						</ol>
+
+						</div>
+					</div>
+				  </div>
+
+				<div class="card">
+					<div class="card-header" id="headingTarSG">
+					  <h5 class="mb-0">
+						<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTarSG" aria-expanded="false" aria-controls="collapseTarSG">
+						  De Tarbaca hacia San Gabriel
+						</button>
+					  </h5>
+					</div>
+
+ 				<div id="collapseTarSG" class="collapse" aria-labelledby="headingTarSG" data-parent="#accordionSGTar">
+      				<div class="card-body">
+
+					<p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+				<ol class="fa-ul">
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_00" aria-expanded="false" aria-controls="SG_1_00"><i class="fas fa-plus-circle"></button></i></span>Después del cruce de Tarbaca (hacia Tranquerillas)</li>
+						<div class="collapse" id="SG_1_00">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.813549,-84.110168</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.813549%2C-84.110168&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_01" aria-expanded="false" aria-controls="SG_1_01"><i class="fas fa-plus-circle"></button></i></span>Barrio La Rita (arriba)</li>
+						<div class="collapse" id="SG_1_01">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.808562,-84.104809</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.808562%2C-84.104809&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_02" aria-expanded="false" aria-controls="SG_1_02"><i class="fas fa-plus-circle"></button></i></span>Barrio La Rita (abajo)</li>
+						<div class="collapse" id="SG_1_02">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.807360,-84.103510</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.807360%2C-84.103510&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_03" aria-expanded="false" aria-controls="SG_1_03"><i class="fas fa-plus-circle"></button></i></span>Entrada a El Tigre</li>
+						<div class="collapse" id="SG_1_03">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.807098,-84.102952</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.807098%2C-84.102952&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_04" aria-expanded="false" aria-controls="SG_1_04"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas (arriba)</li>
+						<div class="collapse" id="SG_1_04">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.803429,-84.102061</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.803429%2C-84.102061&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_05" aria-expanded="false" aria-controls="SG_1_05"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas</li>
+						<div class="collapse" id="SG_1_05">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.801211,-84.100577</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.801211%2C-84.100577&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_06" aria-expanded="false" aria-controls="SG_1_06"><i class="fas fa-plus-circle"></button></i></span>Escuela de Tranquerillas (abajo)</li>
+						<div class="collapse" id="SG_1_06">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.799045,-84.097353</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.799045%2C-84.097353&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_07" aria-expanded="false" aria-controls="SG_1_07"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio Nazareth</li>
+						<div class="collapse" id="SG_1_07">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796521,-84.095886</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796521%2C-84.095886&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_08" aria-expanded="false" aria-controls="SG_1_08"><i class="fas fa-plus-circle"></button></i></span>Barrio San Buenaventura (contiguo a la chatarrera)</li>
+						<div class="collapse" id="SG_1_08">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794459,-84.095260</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794459%2C-84.095260&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_09" aria-expanded="false" aria-controls="SG_1_09"><i class="fas fa-plus-circle"></button></i></span>Importadora Monge La Fila</li>
+						<div class="collapse" id="SG_1_09">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792786,-84.096351</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792786%2C-84.096351&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_10" aria-expanded="false" aria-controls="SG_1_10"><i class="fas fa-plus-circle"></button></i></span>Cruce de La Trinidad, Monterrey y La Legua</li>
+						<div class="collapse" id="SG_1_10">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.790600,-84.096497</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.790600%2C-84.096497&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_11" aria-expanded="false" aria-controls="SG_1_11"><i class="fas fa-plus-circle"></button></i></span>Antes de Bar La Curvita</li>
+						<div class="collapse" id="SG_1_11">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.790424,-84.098213</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.790424%2C-84.098213&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_12" aria-expanded="false" aria-controls="SG_1_12"><i class="fas fa-plus-circle"></button></i></span>Súper Mío Cid</li>
+						<div class="collapse" id="SG_1_12">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.791916,-84.100558</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.791916%2C-84.100558&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_13" aria-expanded="false" aria-controls="SG_1_13"><i class="fas fa-plus-circle"></button></i></span>Bar El Yugo</li>
+						<div class="collapse" id="SG_1_13">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789081,-84.103180</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789081%2C-84.103180&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_14" aria-expanded="false" aria-controls="SG_1_14"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio El Alto</li>
+						<div class="collapse" id="SG_1_14">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.786288,-84.104235</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.786288%2C-84.104235&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_15" aria-expanded="false" aria-controls="SG_1_15"><i class="fas fa-plus-circle"></button></i></span>San Gabriel centro (frente a la ASADA)</li>
+						<div class="collapse" id="SG_1_15">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.787123,-84.105576</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.787123%2C-84.105576&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SG_1_16" aria-expanded="false" aria-controls="SG_1_16"><i class="fas fa-plus-circle"></button></i></span>San Gabriel centro (entre la iglesia y la plaza)</li>
+						<div class="collapse" id="SG_1_16">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.787820,-84.106822</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.787820%2C-84.106822&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+				</ol>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div> <!--ya-->
+
+  <div class="collapse" id="ParLM-SG" aria-labelledby="headingThree" data-parent="#accordion">
+			<div class="card-body">
+
+				<div id="accordionLMSG">
+					<div class="card">
+						<div class="card-header" id="headingLMSG">
+						  <h5 class="mb-0">
+							<button class="btn btn-link" data-toggle="collapse" data-target="#collapseLMSG" aria-expanded="true" aria-controls="collapseLMSG">
+							  De Los Mangos hacia San Gabriel
+							</button>
+						  </h5>
+						</div>
+
+						<div id="collapseLMSG" class="collapse" aria-labelledby="headingLMSG" data-parent="#accordionLMSG">
+							<div class="card-body">
+
+								<p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+								<ol class="fa-ul">
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_00" aria-expanded="false" aria-controls="LM_0_00"><i class="fas fa-plus-circle"></button></i></span>Terminal Los Mangos</li>
+										<div class="collapse" id="LM_0_00">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797259,-84.121426</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797259%2C-84.121426&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_01" aria-expanded="false" aria-controls="LM_0_01"><i class="fas fa-plus-circle"></button></i></span>Los Mangos (frente a Rudy el zapatero)</li>
+                                        <div class="collapse" id="LM_0_01">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796409,-84.119916</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796409%2C-84.119916&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_02" aria-expanded="false" aria-controls="LM_0_02"><i class="fas fa-plus-circle"></button></i></span>Cruce de Limonal</li>
+                                        <div class="collapse" id="LM_0_02">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794086,-84.117541</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794086%2C-84.117541&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_03" aria-expanded="false" aria-controls="LM_0_03"><i class="fas fa-plus-circle"></button></i></span>Salitral (frente a Balneario La Reina del Sol)</li>
+                                        <div class="collapse" id="LM_0_03">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793010,-84.115735</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793010%2C-84.115735&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_04" aria-expanded="false" aria-controls="LM_0_04"><i class="fas fa-plus-circle"></button></i></span>La cuesta de Salitral</li>
+                                        <div class="collapse" id="LM_0_04">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792134,-84.112832</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792134%2C-84.112832&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_05" aria-expanded="false" aria-controls="LM_0_05"><i class="fas fa-plus-circle"></button></i></span>La Cuadra (Beto Vargas)</li>
+                                        <div class="collapse" id="LM_0_05">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.790568,-84.109862</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.790568%2C-84.109862&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_06" aria-expanded="false" aria-controls="LM_0_06"><i class="fas fa-plus-circle"></button></i></span>Barrio San Martín</li>
+                                        <div class="collapse" id="LM_0_06">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789646,-84.108297</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789646%2C-84.108297&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+									<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_0_07" aria-expanded="false" aria-controls="LM_0_07"><i class="fas fa-plus-circle"></button></i></span>Barrio San Martín (frente a Alcohólicos Anónimos)</li>
+                                        <div class="collapse" id="LM_0_07">
+											<ul class="fa-ul">
+												<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789796,-84.108501</li>
+												<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789796%2C-84.108501&navigate=yes&zoom=17">Dirección en Waze</a></li>
+											</ul>
+										</div>
+								</ol>
+
+								</div>
+    						</div>
+  						</div>
+
+
+				<div class="card">
+					<div class="card-header" id="headingSGLM">
+					  <h5 class="mb-0">
+						<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSGLM" aria-expanded="false" aria-controls="collapseSGLM">
+						  De San Gabriel hacia Los Mangos
+						</button>
+					  </h5>
+					</div>
+
+				<div id="collapseSGLM" class="collapse" aria-labelledby="headingSGLM" data-parent="#accordionLMSG">
+      				<div class="card-body">
+
+                <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+				<ol class="fa-ul">
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_00" aria-expanded="false" aria-controls="LM_1_00"><i class="fas fa-plus-circle"></button></i></span>Barrio San Martín (frente a Alcohólicos Anónimos)</li>
+						<div class="collapse" id="LM_1_00">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789796,-84.108501</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789796%2C-84.108501&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_01" aria-expanded="false" aria-controls="LM_1_01"><i class="fas fa-plus-circle"></button></i></span>Barrio San Martín</li>
+                        <div class="collapse" id="LM_1_01">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.789646,-84.108297</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.789646%2C-84.108297&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_02" aria-expanded="false" aria-controls="LM_1_02"><i class="fas fa-plus-circle"></button></i></span>La Cuadra (Beto Vargas)</li>
+                        <div class="collapse" id="LM_1_02">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.790568,-84.109862</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.790568%2C-84.109862&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_03" aria-expanded="false" aria-controls="LM_1_03"><i class="fas fa-plus-circle"></button></i></span>La cuesta de Salitral</li>
+                        <div class="collapse" id="LM_1_03">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792159,-84.112595</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792159%2C-84.112595&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_04" aria-expanded="false" aria-controls="LM_1_04"><i class="fas fa-plus-circle"></button></i></span>Salitral (frente a Balneario La Reina del Sol)</li>
+                        <div class="collapse" id="LM_1_04">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793010,-84.115735</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793010%2C-84.115735&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_05" aria-expanded="false" aria-controls="LM_1_05"><i class="fas fa-plus-circle"></button></i></span>Cruce de Limonal</li>
+                        <div class="collapse" id="LM_1_05">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794086,-84.117541</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794086%2C-84.117541&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_06" aria-expanded="false" aria-controls="LM_1_06"><i class="fas fa-plus-circle"></button></i></span>Los Mangos (frente a Rudy el zapatero)</li>
+                        <div class="collapse" id="LM_1_06">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796409,-84.119916</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796409%2C-84.119916&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+					<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#LM_1_07" aria-expanded="false" aria-controls="LM_1_07"><i class="fas fa-plus-circle"></button></i></span>Terminal Los Mangos</li>
+                        <div class="collapse" id="LM_1_07">
+							<ul class="fa-ul">
+								<li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797259,-84.121426</li>
+								<li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797259%2C-84.121426&navigate=yes&zoom=17">Dirección en Waze</a></li>
+							</ul>
+						</div>
+				</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </div> <!--ya-->
+
+  <div class="collapse" id="ParJor-Tar" aria-labelledby="headingFour" data-parent="#accordion">
+			<div class="card-body">
+
+            <div id="accordionJorTar">
+                <div class="card">
+                    <div class="card-header" id="headingJorTar">
+                      <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseJorTar" aria-expanded="true" aria-controls="collapseJorTar">
+                          De Jorco hacia Tarbaca
+                        </button>
+                      </h5>
+                    </div>
+
+            <div id="collapseJorTar" class="collapse" aria-labelledby="headingJorTar" data-parent="#accordionJorTar">
+                <div class="card-body">
+                    <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                    <ol class="fa-ul">
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_00" aria-expanded="false" aria-controls="JO_0_00"><i class="fas fa-plus-circle"></button></i></span>Palí de Jorco</li>
+                            <div class="collapse" id="JO_0_00">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797028,-84.132640</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797028%2C-84.132640&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_01" aria-expanded="false" aria-controls="JO_0_01"><i class="fas fa-plus-circle"></button></i></span>Iglesia Católica de Vuelta de Jorco</li>
+                            <div class="collapse" id="JO_0_01">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796470,-84.129450</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796470%2C-84.129450&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_02" aria-expanded="false" aria-controls="JO_0_02"><i class="fas fa-plus-circle"></button></i></span>Entrada a Los Mangos</li>
+                            <div class="collapse" id="JO_0_02">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796584,-84.127694</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796584%2C-84.127694&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_03" aria-expanded="false" aria-controls="JO_0_03"><i class="fas fa-plus-circle"></button></i></span>Bar La Viagra</li>
+                            <div class="collapse" id="JO_0_03">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798275,-84.125554</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798275%2C-84.125554&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_04" aria-expanded="false" aria-controls="JO_0_04"><i class="fas fa-plus-circle"></button></i></span>Ojo de Agua</li>
+                            <div class="collapse" id="JO_0_04">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.802922,-84.124317</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.802922%2C-84.124317&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_05" aria-expanded="false" aria-controls="JO_0_05"><i class="fas fa-plus-circle"></button></i></span>Tanque de Ojo de Agua</li>
+                            <div class="collapse" id="JO_0_05">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.802967,-84.120125</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.802967%2C-84.120125&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_06" aria-expanded="false" aria-controls="JO_0_06"><i class="fas fa-plus-circle"></button></i></span>Barrio El Carmen</li>
+                            <div class="collapse" id="JO_0_06">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.805500,-84.118204</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.805500%2C-84.118204&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_07" aria-expanded="false" aria-controls="JO_0_07"><i class="fas fa-plus-circle"></button></i></span>Los Camiones</li>
+                            <div class="collapse" id="JO_0_07">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.808094,-84.118258</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.808094%2C-84.118258&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_08" aria-expanded="false" aria-controls="JO_0_08"><i class="fas fa-plus-circle"></button></i></span>La Vuelta Hundida</li>
+                            <div class="collapse" id="JO_0_08">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.808154,-84.116361</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.808154%2C-84.116361&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_09" aria-expanded="false" aria-controls="JO_0_09"><i class="fas fa-plus-circle"></button></i></span>Después de La Vuelta Hundida</li>
+                            <div class="collapse" id="JO_0_09">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.809168,-84.114793</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.809168%2C-84.114793&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_10" aria-expanded="false" aria-controls="JO_0_10"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (abajo)</li>
+                            <div class="collapse" id="JO_0_10">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.809127,-84.116268</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.809127%2C-84.116268&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_11" aria-expanded="false" aria-controls="JO_0_11"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (arriba)</li>
+                            <div class="collapse" id="JO_0_11">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.810118,-84.117185</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.810118%2C-84.117185&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_12" aria-expanded="false" aria-controls="JO_0_12"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (centro)</li>
+                            <div class="collapse" id="JO_0_12">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.810586,-84.118665</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.810586%2C-84.118665&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_13" aria-expanded="false" aria-controls="JO_0_13"><i class="fas fa-plus-circle"></button></i></span>Antes de Restaurante Kamakiri</li>
+                            <div class="collapse" id="JO_0_13">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.811754,-84.116944</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.811754%2C-84.116944&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_14" aria-expanded="false" aria-controls="JO_0_14"><i class="fas fa-plus-circle"></button></i></span>Plaza de deportes de Tarbaca</li>
+                            <div class="collapse" id="JO_0_14">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.812381,-84.114682</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.812381%2C-84.114682&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_15" aria-expanded="false" aria-controls="JO_0_15"><i class="fas fa-plus-circle"></button></i></span>El Cipresal</li>
+                            <div class="collapse" id="JO_0_15">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.814018,-84.113474</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.814018%2C-84.113474&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_0_16" aria-expanded="false" aria-controls="JO_0_16"><i class="fas fa-plus-circle"></button></i></span>Antes del cruce de San Gabriel y Acosta en Tarbaca</li>
+                            <div class="collapse" id="JO_0_16">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.813110,-84.110899</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.813110%2C-84.110899&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                    </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" id="headingTarJor">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTarJor" aria-expanded="false" aria-controls="collapseTarJor">
+                      De Tarbaca hacia Jorco
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseTarJor" class="collapse" aria-labelledby="headingTarJor" data-parent="#accordionJorTar">
+                    <div class="card-body">
+
+                        <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                        <ol class="fa-ul">
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_00" aria-expanded="false" aria-controls="JO_1_00"><i class="fas fa-plus-circle"></button></i></span>Antes del cruce de San Gabriel y Acosta en Tarbaca</li>
+                                <div class="collapse" id="JO_1_00">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.813110,-84.110899</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.813110%2C-84.110899&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_01" aria-expanded="false" aria-controls="JO_1_01"><i class="fas fa-plus-circle"></button></i></span>El Cipresal</li>
+                                <div class="collapse" id="JO_1_01">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.814212,-84.113622</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.814212%2C-84.113622&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_02" aria-expanded="false" aria-controls="JO_1_02"><i class="fas fa-plus-circle"></button></i></span>Plaza de deportes de Tarbaca</li>
+                                <div class="collapse" id="JO_1_02">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.812777,-84.114998</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.812777%2C-84.114998&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_03" aria-expanded="false" aria-controls="JO_1_03"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael</li>
+                                <div class="collapse" id="JO_1_03">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.811754,-84.116944</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.811754%2C-84.116944&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_04" aria-expanded="false" aria-controls="JO_1_04"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (centro)</li>
+                                <div class="collapse" id="JO_1_04">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.810881,-84.118306</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.810881%2C-84.118306&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_05" aria-expanded="false" aria-controls="JO_1_05"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (arriba)</li>
+                                <div class="collapse" id="JO_1_05">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.809733,-84.117772</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.809733%2C-84.117772&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_06" aria-expanded="false" aria-controls="JO_1_06"><i class="fas fa-plus-circle"></button></i></span>Barrio San Rafael (abajo)</li>
+                                <div class="collapse" id="JO_1_06">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.809320,-84.116751</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.809320%2C-84.116751&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_07" aria-expanded="false" aria-controls="JO_1_07"><i class="fas fa-plus-circle"></button></i></span>Antes de La Vuelta Hundida</li>
+                                <div class="collapse" id="JO_1_07">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.808513,-84.115637</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.808513%2C-84.115637&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_08" aria-expanded="false" aria-controls="JO_1_08"><i class="fas fa-plus-circle"></button></i></span>Los Camiones</li>
+                                <div class="collapse" id="JO_1_08">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.808188,-84.118156</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.808188%2C-84.118156&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_09" aria-expanded="false" aria-controls="JO_1_09"><i class="fas fa-plus-circle"></button></i></span>Barrio El Carmen</li>
+                                <div class="collapse" id="JO_1_09">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.805878,-84.118354</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.805878%2C-84.118354&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_010" aria-expanded="false" aria-controls="JO_1_010"><i class="fas fa-plus-circle"></button></i></span>Tanque de Ojo de Agua</li>
+                                <div class="collapse" id="JO_1_010">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.803332,-84.120421</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.803332%2C-84.120421&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_011" aria-expanded="false" aria-controls="JO_1_011"><i class="fas fa-plus-circle"></button></i></span>Ojo de Agua</li>
+                                <div class="collapse" id="JO_1_011">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.802647,-84.124595</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.802647%2C-84.124595&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_012" aria-expanded="false" aria-controls="JO_1_012"><i class="fas fa-plus-circle"></button></i></span>Bar La Viagra</li>
+                                <div class="collapse" id="JO_1_012">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798629,-84.125554</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798629%2C-84.125554&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_013" aria-expanded="false" aria-controls="JO_1_013"><i class="fas fa-plus-circle"></button></i></span>Funeraria Vuelta de Jorco</li>
+                                <div class="collapse" id="JO_1_013">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796556,-84.128099</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796556%2C-84.128099&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_014" aria-expanded="false" aria-controls="JO_1_014"><i class="fas fa-plus-circle"></button></i></span>Escuela de Jorco</li>
+                                <div class="collapse" id="JO_1_014">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796828,-84.130158</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796828%2C-84.130158&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#JO_1_015" aria-expanded="false" aria-controls="JO_1_015"><i class="fas fa-plus-circle"></button></i></span>Palí de Jorco</li>
+                                <div class="collapse" id="JO_1_015">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797298,-84.132901</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797298%2C-84.132901&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                        </ol>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+  </div> <!--ya-->
+
+  <div class="collapse" id="ParSI-Jor" aria-labelledby="headingFive" data-parent="#accordion">
+    <div class="card card-body">
+
+      <div id="accordionSIJor">
+          <div class="card">
+            <div class="card-header" id="headingSIJor">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSIJor" aria-expanded="true" aria-controls="collapseSIJor">
+                  De San Ignacio hacia Jorco
+                </button>
+              </h5>
+            </div>
+
+      <div id="collapseSIJor" class="collapse" aria-labelledby="headingSIJor" data-parent="#accordionSIJor">
+        <div class="card-body">
+
+            <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+            <ol class="fa-ul">
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_00" aria-expanded="false" aria-controls="SI_0_00"><i class="fas fa-plus-circle"></button></i></span>San Ignacio centro (costado norte de la iglesia)</li>
+                    <div class="collapse" id="SI_0_00">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798795,-84.161557</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798795%2C-84.161557&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_01" aria-expanded="false" aria-controls="SI_0_01"><i class="fas fa-plus-circle"></button></i></span>Antes de la Delegación de Policía</li>
+					<div class="collapse" id="SI_0_01">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798238,-84.158749</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798238%2C-84.158749&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_02" aria-expanded="false" aria-controls="SI_0_02"><i class="fas fa-plus-circle"></button></i></span>Después de la Delegación de Policía</li>
+					<div class="collapse" id="SI_0_02">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797755,-84.157363</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797755%2C-84.157363&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_03" aria-expanded="false" aria-controls="SI_0_03"><i class="fas fa-plus-circle"></button></i></span>La Ortiga</li>
+					<div class="collapse" id="SI_0_03">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797755,-84.157363</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795890%2C-84.154694&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_04" aria-expanded="false" aria-controls="SI_0_04"><i class="fas fa-plus-circle"></button></i></span>La Esperanza</li>
+					<div class="collapse" id="SI_0_04">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796285,-84.151873</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796285%2C-84.151873&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_05" aria-expanded="false" aria-controls="SI_0_05"><i class="fas fa-plus-circle"></button></i></span>Taller Cuyo</li>
+					<div class="collapse" id="SI_0_05">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795553,-84.150407</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795553%2C-84.150407&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_06" aria-expanded="false" aria-controls="SI_0_06"><i class="fas fa-plus-circle"></button></i></span>Antes de Escuela La Esperanza</li>
+					<div class="collapse" id="SI_0_06">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795079,-84.148808</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795079%2C-84.148808&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_07" aria-expanded="false" aria-controls="SI_0_07"><i class="fas fa-plus-circle"></button></i></span>Escuela La Esperanza</li>
+					<div class="collapse" id="SI_0_07">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795114,-84.146556</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795114%2C-84.146556&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_08" aria-expanded="false" aria-controls="SI_0_08"><i class="fas fa-plus-circle"></button></i></span>Después de Escuela La Esperanza</li>
+					<div class="collapse" id="SI_0_08">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795638,-84.145205</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795638%2C-84.145205&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_09" aria-expanded="false" aria-controls="SI_0_09"><i class="fas fa-plus-circle"></button></i></span>Plaza de deportes de La Esperanza</li>
+                	<div class="collapse" id="SI_0_09">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795706,-84.143681</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795706%2C-84.143681&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+				<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_10" aria-expanded="false" aria-controls="SI_0_10"><i class="fas fa-plus-circle"></button></i></span>Lubricentro La Esperanza</li>
+                	<div class="collapse" id="SI_0_10">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795214,-84.141359</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795214%2C-84.141359&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+				<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_0_11" aria-expanded="false" aria-controls="SI_0_11"><i class="fas fa-plus-circle"></button></i></span>El Colono Agropecuario</li>
+					<div class="collapse" id="SI_0_11">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796764,-84.135691</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796764%2C-84.135691&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+            </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingJorSI">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseJorSI" aria-expanded="false" aria-controls="collapseJorSI">
+              De Jorco hacia San Ignacio
+            </button>
+          </h5>
+        </div>
+
+        <div id="collapseJorSI" class="collapse" aria-labelledby="headingJorSI" data-parent="#accordionSIJor">
+      <div class="card-body">
+
+            <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+            <ol class="fa-ul">
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_00" aria-expanded="false" aria-controls="SI_1_00"><i class="fas fa-plus-circle"></button></i></span>El Colono Agropecuario</li>
+                    <div class="collapse" id="SI_1_00">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796764,-84.135691</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796764%2C-84.135691&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_01" aria-expanded="false" aria-controls="SI_1_01"><i class="fas fa-plus-circle"></button></i></span>Lubricentro La Esperanza</li>
+					<div class="collapse" id="SI_1_01">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795214,-84.141359</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795214%2C-84.141359&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_02" aria-expanded="false" aria-controls="SI_1_02"><i class="fas fa-plus-circle"></button></i></span>Plaza de deportes de La Esperanza</li>
+                	<div class="collapse" id="SI_1_02">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795806,-84.143681</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795806%2C-84.143681&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+				<li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_03" aria-expanded="false" aria-controls="SI_1_03"><i class="fas fa-plus-circle"></button></i></span>Antes de Escuela La Esperanza</li>
+					<div class="collapse" id="SI_1_03">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795638,-84.145205</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795638%2C-84.145205&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_04" aria-expanded="false" aria-controls="SI_1_04"><i class="fas fa-plus-circle"></button></i></span>Escuela La Esperanza</li>
+					<div class="collapse" id="SI_1_04">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795114,-84.146556</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795114%2C-84.146556&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_05" aria-expanded="false" aria-controls="SI_1_05"><i class="fas fa-plus-circle"></button></i></span>Después de Escuela La Esperanza</li>
+					<div class="collapse" id="SI_1_05">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795079,-84.148808</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795079%2C-84.148808&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_06" aria-expanded="false" aria-controls="SI_1_06"><i class="fas fa-plus-circle"></button></i></span>Taller Cuyo</li>
+					<div class="collapse" id="SI_1_06">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795553,-84.150407</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795553%2C-84.150407&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_07" aria-expanded="false" aria-controls="SI_1_07"><i class="fas fa-plus-circle"></button></i></span>La Esperanza</li>
+					<div class="collapse" id="SI_1_07">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796285,-84.151873</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796285%2C-84.151873&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_08" aria-expanded="false" aria-controls="SI_1_08"><i class="fas fa-plus-circle"></button></i></span>La Ortiga</li>
+					<div class="collapse" id="SI_1_08">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.795890,-84.154694</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.795890%2C-84.154694&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_09" aria-expanded="false" aria-controls="SI_1_09	"><i class="fas fa-plus-circle"></button></i></span>Antes de la Delegación de Policía</li>
+					<div class="collapse" id="SI_1_09">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797755,-84.157363</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797755%2C-84.157363&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_10" aria-expanded="false" aria-controls="SI_1_10"><i class="fas fa-plus-circle"></button></i></span>Después de la Delegación de Policía</li>
+					<div class="collapse" id="SI_1_10">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798238,-84.158749</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798238%2C-84.158749&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+                <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SI_1_11" aria-expanded="false" aria-controls="SI_1_11"><i class="fas fa-plus-circle"></button></i></span>San Ignacio centro (costado norte de la iglesia)</li>
+					<div class="collapse" id="SI_1_11">
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798795,-84.161557</li>
+                            <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798795%2C-84.161557&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                        </ul>
+                    </div>
+            </ol>
+            </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div> <!--ya-->
+
+  <div class="collapse" id="ParTur-SI" aria-labelledby="headingSix" data-parent="#accordion">
+    <div class="card card-body">
+
+        <div id="accordionTurSI">
+            <div class="card">
+                <div class="card-header" id="headingTurSI">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTurSI" aria-expanded="true" aria-controls="collapseTurSI">
+                      De Turrujal hacia San Ignacio
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseTurSI" class="collapse" aria-labelledby="headingTurSI" data-parent="#accordionTurSI">
+                    <div class="card-body">
+
+                        <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                        <ol class="fa-ul">
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_00" aria-expanded="false" aria-controls="TU_0_00"><i class="fas fa-plus-circle"></button></i></span>Terminal Rancho Jácara</li>
+                                <div class="collapse" id="TU_0_00">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.799001,-84.174466</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.799001%2C-84.174466&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_01" aria-expanded="false" aria-controls="TU_0_01"><i class="fas fa-plus-circle"></button></i></span>El Yoyo</li>
+                                <div class="collapse" id="TU_0_01">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798104,-84.173245</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798104%2C-84.173245&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_02" aria-expanded="false" aria-controls="TU_0_02"><i class="fas fa-plus-circle"></button></i></span>Kínder de Turrujal</li>
+                                <div class="collapse" id="TU_0_02">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798459,-84.171852</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798459%2C-84.171852&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_03" aria-expanded="false" aria-controls="TU_0_03"><i class="fas fa-plus-circle"></button></i></span>Super Plaza</li>
+                                <div class="collapse" id="TU_0_03">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798387,-84.170456</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798387%2C-84.170456&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_04" aria-expanded="false" aria-controls="TU_0_04"><i class="fas fa-plus-circle"></button></i></span>Abastecedor Alberto</li>
+                                <div class="collapse" id="TU_0_04">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797457,-84.169271</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797457%2C-84.169271&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_05" aria-expanded="false" aria-controls="TU_0_05"><i class="fas fa-plus-circle"></button></i></span>El Torno</li>
+                                <div class="collapse" id="TU_0_05">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797328,-84.168146</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797328%2C-84.168146&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_06" aria-expanded="false" aria-controls="TU_0_06"><i class="fas fa-plus-circle"></button></i></span>La Cuesta</li>
+                                <div class="collapse" id="TU_0_06">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797309,-84.166626</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797309%2C-84.166626&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_07" aria-expanded="false" aria-controls="TU_0_07"><i class="fas fa-plus-circle"></button></i></span>Entrada al Colegio Técnico Profesional</li>
+                                <div class="collapse" id="TU_0_07">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796947,-84.163140</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796947%2C-84.163140&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_0_08" aria-expanded="false" aria-controls="TU_0_08"><i class="fas fa-plus-circle"></button></i></span>Clínica de Acosta</li>
+                                <div class="collapse" id="TU_0_08">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797470,-84.161646</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797470%2C-84.161646&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" id="headingSITur">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSITur" aria-expanded="false" aria-controls="collapseSITur">
+                      De San Ignacio hacia Turrujal
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseSITur" class="collapse" aria-labelledby="headingSITur" data-parent="#accordionTurSI">
+                    <div class="card-body">
+
+                        <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                        <ol class="fa-ul">
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_00" aria-expanded="false" aria-controls="TU_1_00"><i class="fas fa-plus-circle"></button></i></span>Clínica de Acosta</li>
+                                <div class="collapse" id="TU_1_00">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797470,-84.161646</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797470%2C-84.161646&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_01" aria-expanded="false" aria-controls="TU_1_01"><i class="fas fa-plus-circle"></button></i></span>Entrada al Colegio Técnico Profesional</li>
+                                <div class="collapse" id="TU_1_01">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796947,-84.163140</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796947%2C-84.163140&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_02" aria-expanded="false" aria-controls="TU_1_02"><i class="fas fa-plus-circle"></button></i></span>La Cuesta</li>
+                                <div class="collapse" id="TU_1_02">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797138,-84.166584</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797138%2C-84.166584&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_03" aria-expanded="false" aria-controls="TU_1_03"><i class="fas fa-plus-circle"></button></i></span>El Torno</li>
+                                <div class="collapse" id="TU_1_03">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797166,-84.168238</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797166%2C-84.168238&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_04" aria-expanded="false" aria-controls="TU_1_04"><i class="fas fa-plus-circle"></button></i></span>Abastecedor Alberto</li>
+                                <div class="collapse" id="TU_1_04">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.797544,-84.169716</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.797544%2C-84.169716&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_05" aria-expanded="false" aria-controls="TU_1_05"><i class="fas fa-plus-circle"></button></i></span>Super Plaza</li>
+                                <div class="collapse" id="TU_1_05">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798359,-84.170695</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798359%2C-84.170695&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_06" aria-expanded="false" aria-controls="TU_1_06"><i class="fas fa-plus-circle"></button></i></span>Kínder de Turrujal</li>
+                                <div class="collapse" id="TU_1_06">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798401,-84.171896</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798401%2C-84.171896&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_07" aria-expanded="false" aria-controls="TU_1_07"><i class="fas fa-plus-circle"></button></i></span>El Yoyo</li>
+                                <div class="collapse" id="TU_1_07">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798048,-84.173558</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798048%2C-84.173558&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                            <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#TU_1_08" aria-expanded="false" aria-controls="TU_1_08"><i class="fas fa-plus-circle"></button></i></span>Terminal Rancho Jácara</li>
+                                <div class="collapse" id="TU_1_08">
+                                    <ul class="fa-ul">
+                                        <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.798820,-84.174639</li>
+                                        <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.798820%2C-84.174639&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                    </ul>
+                                </div>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--ya-->
+
+  <div class="collapse" id="ParSL-SI" aria-labelledby="headingSeven" data-parent="#accordion">
+    <div class="card card-body">
+
+        <div id="accordionSLSI">
+
+            <div class="card">
+                <div class="card-header" id="headingSLSI">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSLSI" aria-expanded="true" aria-controls="collapseSLSI">
+                      De San Luis hacia San Ignacio
+                    </button>
+                  </h5>
+                </div>
+
+            <div id="collapseSLSI" class="collapse" aria-labelledby="headingSLSI" data-parent="#accordionSLSI">
+                 <div class="card-body">
+
+                    <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                    <ol class="fa-ul">
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_00" aria-expanded="false" aria-controls="SL_0_00"><i class="fas fa-plus-circle"></button></i></span>San Luis centro (frente a Súper Mora)</li>
+                            <div class="collapse" id="SL_0_00">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.791485,-84.167676</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.791485%2C-84.167676&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_01" aria-expanded="false" aria-controls="SL_0_01"><i class="fas fa-plus-circle"></button></i></span>Pulpería Corona</li>
+                            <div class="collapse" id="SL_0_01">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792326,-84.165593</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792326%2C-84.165593&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_02" aria-expanded="false" aria-controls="SL_0_02"><i class="fas fa-plus-circle"></button></i></span>Iglesia Evangélica</li>
+                            <div class="collapse" id="SL_0_02">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793056,-84.163389</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793056%2C-84.163389&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_03" aria-expanded="false" aria-controls="SL_0_03"><i class="fas fa-plus-circle"></button></i></span>Licorera San Luis</li>
+                            <div class="collapse" id="SL_0_03">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793673,-84.162370</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793673%2C-84.162370&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_04" aria-expanded="false" aria-controls="SL_0_04"><i class="fas fa-plus-circle"></button></i></span>Cruce de Los Pozos</li>
+                            <div class="collapse" id="SL_0_04">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794732,-84.159696</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794732%2C-84.159696&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                        <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_0_05" aria-expanded="false" aria-controls="SL_0_05"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio Abarca</li>
+                            <div class="collapse" id="SL_0_05">
+                                <ul class="fa-ul">
+                                    <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796572,-84.160275</li>
+                                    <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796572%2C-84.160275&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                                </ul>
+                            </div>
+                    </ol>
+                 </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingSISL">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSISL" aria-expanded="false" aria-controls="collapseSISL">
+                  De San Ignacio hacia San Luis
+                </button>
+              </h5>
+            </div>
+
+        <div id="collapseSISL" class="collapse" aria-labelledby="headingSISL" data-parent="#accordionSLSI">
+            <div class="card-body">
+
+                <p class="lead">Presione <i class="fas fa-plus-circle"></i> para más información.</p>
+
+                <ol class="fa-ul">
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_00" aria-expanded="false" aria-controls="SL_1_00"><i class="fas fa-plus-circle"></button></i></span>Entrada a Barrio Abarca</li>
+                        <div class="collapse" id="SL_1_00">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.796572,-84.160275</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.796572%2C-84.160275&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_01" aria-expanded="false" aria-controls="SL_1_01"><i class="fas fa-plus-circle"></button></i></span>Cruce de Los Pozos</li>
+                        <div class="collapse" id="SL_1_01">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.794732,-84.159696</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.794732%2C-84.159696&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_02" aria-expanded="false" aria-controls="SL_1_02"><i class="fas fa-plus-circle"></button></i></span>Licorera San Luis</li>
+                        <div class="collapse" id="SL_1_02">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793673,-84.162370</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793673%2C-84.162370&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_03" aria-expanded="false" aria-controls="SL_1_03"><i class="fas fa-plus-circle"></button></i></span>Iglesia Evangélica</li>
+                        <div class="collapse" id="SL_1_03">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.793056,-84.163389</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.793056%2C-84.163389&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_04" aria-expanded="false" aria-controls="SL_1_04"><i class="fas fa-plus-circle"></button></i></span>Pulpería Corona</li>
+                        <div class="collapse" id="SL_1_04">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.792326,-84.165593</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.792326%2C-84.165593&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+                    <li><span class="fa-li"><button class="btn1" type="button" data-toggle="collapse" data-target="#SL_1_05" aria-expanded="false" aria-controls="SL_1_05"><i class="fas fa-plus-circle"></button></i></span>San Luis centro (frente a Súper Mora)</li>
+                        <div class="collapse" id="SL_1_05">
+                            <ul class="fa-ul">
+                                <li><span class="fa-li"><i class="fas fa-location-arrow"></i></span>Coordenadas: 9.791485,-84.167676</li>
+                                <li><span class="fa-li"><i class="fab fa-waze"></i></span><a target="_blank" href="https://ul.waze.com/ul?ll=9.791485%2C-84.167676&navigate=yes&zoom=17">Dirección en Waze</a></li>
+                            </ul>
+                        </div>
+                </ol>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div> <!--ya-->
+
+  </div>
+
+  </body>
+
+</html>
